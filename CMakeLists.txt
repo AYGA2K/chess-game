@@ -13,6 +13,9 @@ add_executable(output
     src/event_handling.cpp
     src/drawing.cpp
     src/texture.cpp
+    src/texture_manager.cpp
+    src/board.cpp
+    src/game_logic.cpp
 )
 
 target_include_directories(output PRIVATE ${SDL3_INCLUDE_DIRS})

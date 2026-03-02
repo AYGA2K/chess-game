@@ -2,9 +2,7 @@
 #include <SDL3/SDL_render.h>
 #include <array>
 #include <optional>
-#include <utility>
 
-using Position = std::pair<int, int>;
 enum class PieceType { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 enum class PieceColor { WHITE, BLACK };
 
@@ -24,4 +22,5 @@ struct State {
   int selectedRow;
   int selectedCol;
   bool pieceSelected;
+  PieceColor currentPlayer = PieceColor::WHITE;
 };

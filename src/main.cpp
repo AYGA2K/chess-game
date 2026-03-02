@@ -7,9 +7,11 @@
 #include <iostream>
 #include <string_view>
 
+#include "board.h"
 #include "constants.h"
 #include "drawing.h"
 #include "event_handling.h"
+#include "texture_manager.h"
 #include "types.h"
 
 int main() {
