@@ -2,6 +2,11 @@
 
 A chess game written in C++ using SDL3 for rendering.
 
+## Screenshots
+
+![Start screen](assets/screenshots/start.png)
+![Game](assets/screenshots/game.png)
+
 ## What it does
 
 - Renders an 8x8 chessboard with standard piece placement
