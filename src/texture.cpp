@@ -24,7 +24,7 @@ SDL_Texture *loadTexture(const std::string &path, SDL_Renderer *renderer) {
 
 bool renderTexture(SDL_Texture *texture, SDL_Renderer *renderer, float x,
                    float y) {
-  SDL_FRect destRect = {x, y, static_cast<float>(pieceSize),
-                        static_cast<float>(pieceSize)};
+  SDL_FRect destRect = {x, y, static_cast<float>(PIECE_SIZE),
+                        static_cast<float>(PIECE_SIZE)};
   return SDL_RenderTexture(renderer, texture, nullptr, &destRect);
 }

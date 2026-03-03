@@ -1,5 +1,4 @@
 #include "game_logic.h"
-#include "constants.h"
 #include <iostream>
 
 bool IsEmpty(State *state, int row, int col) {

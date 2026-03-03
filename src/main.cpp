@@ -13,6 +13,7 @@
 #include "event_handling.h"
 #include "texture_manager.h"
 #include "types.h"
+#include <SDL3_ttf/SDL_ttf.h>
 
 int main() {
 
@@ -50,6 +51,14 @@ int main() {
     return 1;
   }
 
+  if (!initFonts()) {
+    std::cout << "Failed to initialize fonts: " << SDL_GetError() << std::endl;
+    SDL_DestroyRenderer(state->Renderer);
+    SDL_DestroyWindow(state->Window);
+    SDL_Quit();
+    return 1;
+  }
+
   if (!initializePieceTextures(state->Renderer)) {
     std::cout << "Failed to initialize piece textures: " << SDL_GetError()
               << std::endl;
@@ -76,7 +85,11 @@ int main() {
       SDL_SetRenderDrawColor(state->Renderer, BACKGROUND.r, BACKGROUND.g,
                              BACKGROUND.b, BACKGROUND.a);
       SDL_RenderClear(state->Renderer);
-      drawBoard(state);
+      if (state->screen == GameScreen::START) {
+        drawStartScreen(state);
+      } else {
+        drawBoard(state);
+      }
       state->running = SDL_RenderPresent(state->Renderer);
     }
   }
@@ -88,6 +101,7 @@ int main() {
 
   cleanupBoard(state);
   cleanupPieceTextures();
+  cleanupFonts();
 
   SDL_DestroyRenderer(state->Renderer);
   SDL_DestroyWindow(state->Window);

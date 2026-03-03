@@ -5,6 +5,7 @@
 
 enum class PieceType { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
 enum class PieceColor { WHITE, BLACK };
+enum class GameScreen { START, GAME };
 
 struct Piece {
   PieceType type;
@@ -23,4 +24,5 @@ struct State {
   int selectedCol;
   bool pieceSelected;
   PieceColor currentPlayer = PieceColor::WHITE;
+  GameScreen screen = GameScreen::START;
 };

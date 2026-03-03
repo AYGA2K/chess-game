@@ -1,5 +1,7 @@
 #include "event_handling.h"
+#include "board.h"
 #include "constants.h"
+#include "drawing.h"
 #include "game_logic.h"
 #include "types.h"
 #include <iostream>
@@ -16,12 +18,26 @@ bool HandleEvent(SDL_Event *Event, State *state) {
     return true;
   case SDL_EVENT_MOUSE_BUTTON_DOWN: {
     if (Event->button.button == SDL_BUTTON_LEFT) {
+      if (state->screen == GameScreen::START) {
+        float mx = Event->button.x;
+        float my = Event->button.y;
+        SDL_FRect startRect = getStartButtonRect(state);
+        SDL_FRect quitRect = getQuitButtonRect(state);
+        if (mx >= startRect.x && mx <= startRect.x + startRect.w &&
+            my >= startRect.y && my <= startRect.y + startRect.h) {
+          state->screen = GameScreen::GAME;
+        } else if (mx >= quitRect.x && mx <= quitRect.x + quitRect.w &&
+                   my >= quitRect.y && my <= quitRect.y + quitRect.h) {
+          return false;
+        }
+        return true;
+      }
 
       int mouseX = Event->button.x;
       int mouseY = Event->button.y;
 
-      int x_start = (state->windowWidth - cols * cellSize) / 2;
-      int y_start = (state->windowHeight - rows * cellSize) / 2;
+      int x_start = (state->windowWidth - BOARD_SIZE * CELL_SIZE) / 2;
+      int y_start = (state->windowHeight - BOARD_SIZE * CELL_SIZE) / 2;
       if (mouseX < x_start || mouseY < y_start) {
         if (state->pieceSelected) {
           state->pieceSelected = false;
@@ -29,10 +45,10 @@ bool HandleEvent(SDL_Event *Event, State *state) {
         return true;
       }
 
-      int col = (mouseX - x_start) / cellSize;
-      int row = (mouseY - y_start) / cellSize;
+      int col = (mouseX - x_start) / CELL_SIZE;
+      int row = (mouseY - y_start) / CELL_SIZE;
 
-      if (row < 0 || row >= rows || col < 0 || col >= cols)
+      if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE)
         return true;
 
       if (!state->pieceSelected) {
@@ -57,11 +73,15 @@ bool HandleEvent(SDL_Event *Event, State *state) {
         if (state->board[row][col].has_value()) {
           Piece *capturedPiece = state->board[row][col].value();
           if (capturedPiece && capturedPiece->type == PieceType::KING) {
-            std::cout << "King captured! Game over. "
-                      << (state->currentPlayer == PieceColor::WHITE ? "White"
+            std::cout << (state->currentPlayer == PieceColor::WHITE ? "White"
                                                                     : "Black")
                       << " wins!" << std::endl;
-            return false;
+            cleanupBoard(state);
+            initializeBoard(state);
+            state->currentPlayer = PieceColor::WHITE;
+            state->pieceSelected = false;
+            state->screen = GameScreen::START;
+            return true;
           }
         }
 
