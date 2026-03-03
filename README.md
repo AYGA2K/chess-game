@@ -1,6 +1,7 @@
 # Chess Game
 
-A chess game written in C++ using SDL3 for rendering.
+A two-player chess game built in C++ using SDL3 for rendering and SDL3_ttf for text.
+It features a start screen, full piece movement validation, and turn-based play on an 8x8 board.
 
 ## Screenshots
 
